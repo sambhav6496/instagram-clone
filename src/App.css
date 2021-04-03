@@ -5,13 +5,30 @@
   background-color: #fafafa;
 }
 .app-header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
   background-color: white;
   padding: 20px;
   border-bottom: 1px solid lightgray;
   object-fit: contain;
+  display: flex;
+  justify-content: space-between;
 }
 
 .app-signup {
   display: flex;
   flex-direction: column;
+}
+.app-headerImage {
+  object-fit: contain;
+}
+.app-post {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.post-right {
+  margin-left: 20px;
 }
