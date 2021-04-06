@@ -5,6 +5,7 @@ import { db, auth } from "./firebase";
 import { Button, Modal, Input } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ImageUplaod from "./ImageUpload";
+import InstagramEmbed from "react-instagram-embed";
 
 function getModalStyle() {
   const top = 50;
@@ -83,12 +84,6 @@ function App() {
   return (
     // header
     <div className="app">
-      {user?.displayName ? (
-        <ImageUplaod username={user.displayName} />
-      ) : (
-        <h3>Login to Uplaod</h3>
-      )}
-
       <Modal open={open} onClose={() => setOpen(false)}>
         <div style={modalStyle} className={classes.paper}>
           <form className="app-signup">
@@ -154,31 +149,55 @@ function App() {
           alt="instagram"
           className="app-headerImage"
         />
+        {user ? (
+          <Button onClick={() => auth.signOut()}>Logut</Button>
+        ) : (
+          <div className="app-logincontainer">
+            <Button onClick={() => setOpenSignIn(true)}>SignIn</Button>
+            <Button onClick={() => setOpen(true)}>Signup</Button>
+          </div>
+        )}
       </div>
-      {user ? (
-        <Button onClick={() => auth.signOut()}>Logut</Button>
-      ) : (
-        <div className="app-logincontainer">
-          <Button onClick={() => setOpenSignIn(true)}>SignIn</Button>
-          <Button onClick={() => setOpen(true)}>Signup</Button>
+      <div className="app-post">
+        <div className="post-left">
+          {posts.map(({ post, id }) => {
+            const { userName, caption, imageUrl } = post;
+            return (
+              <Post
+                key={id}
+                postId={id}
+                user={user}
+                userName={userName}
+                caption={caption}
+                imageUrl={imageUrl}
+              />
+            );
+          })}
         </div>
-      )}
-
-      {posts.map(({ post, id }) => {
-        const { userName, caption, imageUrl } = post;
-        return (
-          <Post
-            key={id}
-            userName={userName}
-            caption={caption}
-            imageUrl={imageUrl}
+        {/* <div className="post-right">
+          <InstagramEmbed
+            url="https://instagr.am/p/Zw9o4/"
+            clientAccessToken="123|456"
+            maxWidth={320}
+            hideCaption={false}
+            containerTagName="div"
+            protocol=""
+            injectScript
+            onLoading={() => {}}
+            onSuccess={() => {}}
+            onAfterRender={() => {}}
+            onFailure={() => {}}
           />
-        );
-      })}
+        </div> */}
+      </div>
+      <div>
+        {user?.displayName ? (
+          <ImageUplaod username={user.displayName} />
+        ) : (
+          <h3 className="upload-comment">Login to Uplaod</h3>
+        )}
+      </div>
     </div>
-    //posts
-
-    //posts
   );
 }
 
